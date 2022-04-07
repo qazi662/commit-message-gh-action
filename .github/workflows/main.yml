@@ -1,21 +1,8 @@
-name: 'Commit Message Check'
+name: Check PR
+
 on:
   pull_request:
-    types:
-      - opened
-      - edited
-      - reopened
-      - synchronize
-  pull_request_target:
-    types:
-      - opened
-      - edited
-      - reopened
-      - synchronize
-  push:
-    branches:
-      - main
-      - 'releases/*'
+    types: [opened, edited, reopened, synchronize, ready_for_review, review_requested]
 
 jobs:
   check-commit-message:
@@ -23,22 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check Commit Type
-        uses: GsActions/commit-message-checker@v1.0.0
+        uses: gsactions/commit-message-checker@v1
         with:
-          pattern: '\[[^]]+\] .+$'
-          flags: 'gm'
-          error: 'Your first line has to contain a commit type like "[BUGFIX]"..'
+          pattern: '^(|\[(!!!|WIP|POC|REVERT)\])\[(BUGFIX|DOCS|FEATURE|TASK)\] .+($|\n|\r|\n\r)'
+          flags: ''
+          error: 'Your first line has to contain a commit type like "[BUGFIX]".'
       - name: Check Line Length
-        uses: GsActions/commit-message-checker@v1.0.0
+        uses: gsactions/commit-message-checker@v1
         with:
-          pattern: '^[^#].{74}'
+          pattern: '^[^#].{1,74}'
+          flags: 'gm'
           error: 'The maximum line length of 74 characters is exceeded.'
-          excludeDescription: 'true' # optional: this excludes the description body of a pull request
-          excludeTitle: 'true' # optional: this excludes the title of a pull request
-          checkAllCommitMessages: 'true' # optional: this checks all commits associated with a pull request
-          accessToken: ${{ secrets.GITHUB_TOKEN }} # github access token is only required if checkAllCommitMessages is true
-      - name: Check for Resolves / Fixes
-        uses: GsActions/commit-message-checker@v1.0.0
-        with:
-          pattern: '^.+(Resolves|Fixes): \#[0-9]+$'
-          error: 'You need at least one "Resolves|Fixes: #<issue number>" line.'
