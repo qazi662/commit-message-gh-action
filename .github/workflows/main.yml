@@ -31,6 +31,6 @@ jobs:
         with:
           regex_pattern: 'JIR-[0-9]+'
           regex_flags: 'gim'
-          search_string: ' My jira ticket number is JIR-12345'
+          search_string: ' My jira ticket number is JIR-ABC'
       - name: Echo JIRA reference
         run: echo "My JIRA ticket number is ${{ steps.jira.outputs.first_match }}"
