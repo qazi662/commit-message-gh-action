@@ -18,8 +18,13 @@ on:
       - 'releases/*'
 
 jobs:
-  format:
+  check-commit-message:
+    name: Check Commit Message
     runs-on: ubuntu-latest
     steps:
-      - if: |
-          ! contains(github.event.head_commit.message, ‘wip’)
+      - name: Check Commit Type
+        uses: gsactions/commit-message-checker@v1
+        with:
+          pattern: '\[[^]]+\] .+$'
+          flags: 'gm'
+          error: 'Your first line has to contain a commit type like "[BUGFIX]".'
