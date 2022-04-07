@@ -35,4 +35,4 @@ jobs:
       - name: Echo JIRA reference
         run: |
           echo "My JIRA ticket number is ${{ steps.jira.outputs.first_match }}"
-          if [[ ${{ steps.jira.outputs.first_match }} ]] ; then echo "Hello!" ; else echo "Goodbye!" ; fi
+          if [[ ${{ steps.jira.outputs.first_match }} != null ]] ; then echo "Hello!" ; else echo "Goodbye!" ; fi
