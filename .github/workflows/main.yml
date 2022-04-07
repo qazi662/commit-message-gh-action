@@ -33,4 +33,6 @@ jobs:
           regex_flags: 'gim'
           search_string: ' My jira ticket number is JIR-ABC'
       - name: Echo JIRA reference
-        run: echo "My JIRA ticket number is ${{ steps.jira.outputs.first_match }}"
+        run: |
+          echo "My JIRA ticket number is ${{ steps.jira.outputs.first_match }}"
+          if [[ ${{ steps.jira.outputs.first_match }} ]] ; then echo "Hello!" ; else echo "Goodbye!" ; fi
