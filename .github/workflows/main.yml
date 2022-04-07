@@ -18,17 +18,10 @@ on:
       - 'releases/*'
 
 jobs:
-  check-commit-message:
-    name: Check Commit Message
+  log-github-event-goodies:
+    name: 'LOG Everything on GitHub Event'
     runs-on: ubuntu-latest
     steps:
-      - name: validate commit format -- Check if HEAD commit message contains [xyz] or FAIL.
-        uses: gsactions/commit-message-checker@v1
-        with:
-          pattern: \[[^]]+\] .+$
-          flags: gm
-          error: Your first line has to contain a commit type like "[BUGFIX]".
-          excludeTitle: false
-          excludeDescription: false
-          checkAllCommitMessages: false
-          accessToken: false
+      - name: Logging
+        run: |
+          echo "${{toJSON(github.event)}}"
