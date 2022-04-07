@@ -22,15 +22,9 @@ jobs:
     name: Check Commit Message
     runs-on: ubuntu-latest
     steps:
-      - name: Get PR Commits
-        id: 'get-pr-commits'
-        uses: tim-actions/get-pr-commits@master
+      - name: validate commit format -- Check if HEAD commit message contains [xyz] or FAIL.
+        uses: gsactions/commit-message-checker@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Check Subject Line Length
-        uses: tim-actions/commit-message-checker-with-regex@v0.3.1
-        with:
-          commits: ${{ steps.get-pr-commits.outputs.commits }}
-          pattern: '^.{0,5}(\n.*)*$'
-          error: 'Subject too long (max 5)'
+          pattern: '\[[^]]+\]'
+          flags: 'gm'
+          error: 'Your  commit must contain `[..]` like "[BUGFIX] or [SDK-974]".'
